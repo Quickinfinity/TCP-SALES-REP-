@@ -910,7 +910,7 @@ function calcPCF1(){
   s('pcf1-nc-ic',ncIC,'gal');s('pcf1-nc-1',nc1,'gal');
   s('pcf1-nc-qt',qt,'lbs');s('pcf1-nc-t',nct,'gal');
   s('pcf1-nc-wb',sf/300,'gal');s('pcf1-nc-sb',sf/300,'gal');s('pcf1-nc-af',sf/1500,'gal');
-  s('pcf1-nc-gag',sf>0?nc1/5:0,'packs');s('pcf1-nc-tbsp',sf>0?nc1*4:0,'tbsp');
+  s('pcf1-nc-gag',sf>0?(sf/300)/5:0,'packs');s('pcf1-nc-tbsp',sf>0?(sf/300)*4:0,'tbsp');
 }
 
 // ─── Poly Hard ───
