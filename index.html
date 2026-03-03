@@ -76,6 +76,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--t1);line-h
   <button class="nb" onclick="go(6)"><span class="sn">7</span>CP Sealer</button>
   <button class="nb" onclick="go(7)"><span class="sn">8</span>Protector Color Flakes</button>
   <button class="nb" onclick="go(8)"><span class="sn">9</span>Poly Hard</button>
+  <button class="nb" onclick="go(9)"><span class="sn">&#9636;</span>Mil Reference</button>
 </div></div>
 
 <div class="mc">
@@ -268,27 +269,6 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--t1);line-h
     </div>
   </div>
 </div>
-</div>
-
-<!-- Mil Reference Table -->
-<div class="cd" style="margin-top:18px">
-  <div class="ct" style="cursor:pointer;user-select:none" onclick="this.parentElement.querySelector('.mil-body').style.display=this.parentElement.querySelector('.mil-body').style.display==='none'?'':'none';this.querySelector('.mil-arr').textContent=this.querySelector('.mil-arr').textContent==='▼'?'▶':'▼'">
-    <span style="background:rgba(245,197,24,.15);color:var(--y);width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0">&#9636;</span>
-    Coating Mil Thickness Reference &mdash; Total Sq Ft Per Gallon
-    <span class="mil-arr" style="margin-left:auto;font-size:.7rem;color:var(--t3)">▼</span>
-  </div>
-  <div class="mil-body">
-    <table style="width:100%;border-collapse:collapse;font-size:.8rem">
-      <thead>
-        <tr>
-          <th style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--bd);color:var(--t3);font-family:'Bebas Neue',sans-serif;letter-spacing:1px;font-size:.75rem;font-weight:400">Thickness (in)</th>
-          <th style="text-align:right;padding:6px 10px;border-bottom:1px solid var(--bd);color:var(--t3);font-family:'Bebas Neue',sans-serif;letter-spacing:1px;font-size:.75rem;font-weight:400">Mil</th>
-          <th style="text-align:right;padding:6px 10px;border-bottom:1px solid var(--bd);color:var(--t3);font-family:'Bebas Neue',sans-serif;letter-spacing:1px;font-size:.75rem;font-weight:400">Sq Ft / Gal</th>
-        </tr>
-      </thead>
-      <tbody id="mil-tbody"></tbody>
-    </table>
-  </div>
 </div>
 
 <!-- ═══ PAGE 2: METALLIC MARBLE STAIN ═══ -->
@@ -705,6 +685,24 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--t1);line-h
     <div class="rr"><span class="lb">PERFECT Poly 90 1st Top Coat</span><span class="vl" id="ph-db-1">0.00 gal</span></div>
     <div class="rr"><span class="lb">PERFECT Poly 90 2nd Top Coat</span><span class="vl" id="ph-db-2">0.00 gal</span></div>
   </div>
+</div>
+</div>
+
+<!-- ═══ PAGE 10: MIL REFERENCE ═══ -->
+<div class="pg" id="p9">
+<div class="sh"><div class="sl">Reference</div><h2>Coating Mil Thickness</h2><p>Coverage rate (sq ft per gallon) by coating thickness in inches and mils.</p></div>
+<div class="cd" style="max-width:520px">
+  <div class="ct">&#9636; Total Sq Ft Per Gallon by Mil</div>
+  <table style="width:100%;border-collapse:collapse">
+    <thead>
+      <tr>
+        <th style="text-align:left;padding:8px 12px;border-bottom:2px solid var(--bd2);color:var(--t3);font-family:'Bebas Neue',sans-serif;letter-spacing:1px;font-size:.8rem;font-weight:400">Thickness (in)</th>
+        <th style="text-align:right;padding:8px 12px;border-bottom:2px solid var(--bd2);color:var(--t3);font-family:'Bebas Neue',sans-serif;letter-spacing:1px;font-size:.8rem;font-weight:400">Mil</th>
+        <th style="text-align:right;padding:8px 12px;border-bottom:2px solid var(--bd2);color:var(--t3);font-family:'Bebas Neue',sans-serif;letter-spacing:1px;font-size:.8rem;font-weight:400">Sq Ft / Gal</th>
+      </tr>
+    </thead>
+    <tbody id="mil-tbody"></tbody>
+  </table>
 </div>
 </div>
 
