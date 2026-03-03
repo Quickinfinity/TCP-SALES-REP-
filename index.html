@@ -752,9 +752,9 @@ function pcfSub(i){
 }
 
 // ─── Helpers ───
-function v(id){return parseFloat(document.getElementById(id).value)||0;}
+function v(id){return Math.max(0,parseFloat(document.getElementById(id).value)||0);}
 function s(id,val,unit){document.getElementById(id).textContent=val.toFixed(2)+' '+(unit||'');}
-function sqft(sf,l,w){return (l*w)+sf;}
+function sqft(sf,l,w){return sf>0?sf:(l*w);}
 function lrb(sqft,mil){return (sqft*(mil/1000)*144.4)/231;}
 
 // ─── GraniFlex 0: ColorFlakes ───
@@ -774,7 +774,7 @@ function calcGF0(){
   s('gf0-pp-lrb',lrbV,'gal');s('gf0-pp-cf',cf,'lbs');
   const pp1=sf/160,pp2=sf/240,ppt=pp1+pp2;
   s('gf0-pp-1',pp1,'gal');s('gf0-pp-2',pp2,'gal');s('gf0-pp-t',ppt,'gal');
-  const directSF=v('gf0-sf'); s('gf0-pp-oad',directSF>0?directSF/100:0,'gal');
+  s('gf0-pp-oad',sf>0?sf/100:0,'gal');
   s('gf0-pp-gag',sf>0?pp2/5:0,'packs');s('gf0-pp-tbsp',sf>0?pp2*4:0,'tbsp');
   // Graniseal
   s('gf0-gs-pf1',pf1,'gal');s('gf0-gs-pf2',pf2,'gal');s('gf0-gs-pft',pft,'gal');
@@ -799,7 +799,7 @@ function calcGF1(){
   s('gf1-pp-lrb',lrbV,'gal');s('gf1-pp-qz',qz,'lbs');
   const pp1=sf/140,pp2=sf/200,ppt=pp1+pp2;
   s('gf1-pp-1',pp1,'gal');s('gf1-pp-2',pp2,'gal');s('gf1-pp-t',ppt,'gal');
-  const dSF=v('gf1-sf');s('gf1-pp-oad',dSF>0?dSF/100:0,'gal');
+  s('gf1-pp-oad',sf>0?sf/100:0,'gal');
   s('gf1-pp-gag',sf>0?pp2/5:0,'packs');s('gf1-pp-tbsp',sf>0?pp2*4:0,'tbsp');
   // Graniseal
   s('gf1-gs-pf1',pf1,'gal');s('gf1-gs-pf2',pf2,'gal');s('gf1-gs-pft',pft,'gal');
@@ -827,7 +827,7 @@ function calcGF2(){
   const ppIC=sf/175,pp1=sf/140,pp2=sf/200,ppt=ppIC+pp1+pp2;
   s('gf2-pp-ic',ppIC,'gal');s('gf2-pp-1',pp1,'gal');s('gf2-pp-2',pp2,'gal');
   s('gf2-pp-qt',qt,'lbs');s('gf2-pp-t',ppt,'gal');
-  const dSF=v('gf2-sf');s('gf2-pp-oad',sf>0?sf/100:0,'gal');
+  s('gf2-pp-oad',sf>0?sf/100:0,'gal');
   s('gf2-pp-gag',sf>0?pp2/5:0,'packs');s('gf2-pp-tbsp',sf>0?pp2*4:0,'tbsp');
   // Graniseal
   s('gf2-gs-pf1',pf1,'gal');s('gf2-gs-pf2',pf2,'gal');s('gf2-gs-pft',pft,'gal');
@@ -851,7 +851,7 @@ function calcMM(){
 
 // ─── Resinous 1-2-3 ───
 function calcR3(){
-  const sf=sqft(v('r3-sf'),v('r3-l1'),v('r3-w1'))+v('r3-l2')*v('r3-w2');
+  const sf=v('r3-sf')+(v('r3-l1')*v('r3-w1'))+(v('r3-l2')*v('r3-w2'));
   document.getElementById('r3-tot').textContent=sf.toFixed(0);
   const bc=sf/200,c1=sf/400,c2=sf/400;
   s('r3-bc',bc,'gal');s('r3-c1',c1,'gal');s('r3-c2',c2,'gal');s('r3-ct',c1+c2,'gal');
