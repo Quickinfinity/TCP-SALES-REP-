@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CP Systems Calculator — The Concrete Protector</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f1117;--c1:#181b24;--c2:#1e222e;--inp:#252a38;--bd:#2a2f3e;--bd2:#3d4458;--y:#f5c518;--yg:rgba(245,197,24,.15);--g:#34d399;--r:#f87171;--b:#60a5fa;--o:#fb923c;--p:#a78bfa;--t:#2dd4bf;--t1:#e8eaf0;--t2:#8b92a5;--t3:#5a6178;--tl:#9ca3b8}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--t1);line-height:1.5;min-height:100vh}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:3px}
+.hdr{background:linear-gradient(135deg,#0f1117,#1a1d2b,#0f1117);border-bottom:2px solid var(--y);padding:18px 28px;position:sticky;top:0;z-index:100;box-shadow:0 4px 30px rgba(0,0,0,.5)}
+.hi{max-width:1300px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.hdr h1{font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:3px;color:var(--y);line-height:1}
+.hdr .sub{font-size:.78rem;color:var(--t2);letter-spacing:1px}
+.nav{background:var(--c1);border-bottom:1px solid var(--bd);position:sticky;top:74px;z-index:99;overflow-x:auto}
+.ni{max-width:1300px;margin:0 auto;display:flex}
+.nb{font-family:'Outfit',sans-serif;font-size:.68rem;font-weight:600;letter-spacing:.5px;text-transform:uppercase;padding:10px 14px;border:none;background:0 0;color:var(--t2);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:.2s}
+.nb:hover{color:var(--t1);background:var(--yg)}
+.nb.ac{color:var(--y);border-bottom-color:var(--y);background:rgba(245,197,24,.06)}
+.nb .sn{display:inline-block;width:16px;height:16px;line-height:16px;text-align:center;border-radius:50%;background:var(--bd);color:var(--t3);font-size:.55rem;font-weight:700;margin-right:4px}
+.nb.ac .sn{background:var(--y);color:#111}
+.mc{max-width:1300px;margin:0 auto;padding:22px 18px 80px}
+.pg{display:none;animation:fi .3s ease}.pg.ac{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.sh{margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid var(--bd)}
+.sh h2{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:2px;margin-bottom:2px}
+.sh p{font-size:.82rem;color:var(--t2)}
+.sh .sl{font-size:.62rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--y);font-weight:600;margin-bottom:3px}
+.cd{background:var(--c1);border:1px solid var(--bd);border-radius:10px;padding:18px;margin-bottom:14px}
+.ct{font-family:'Bebas Neue',sans-serif;font-size:.95rem;letter-spacing:1.5px;color:var(--y);margin-bottom:12px;display:flex;align-items:center;gap:7px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media(max-width:900px){.g2,.g3,.g4{grid-template-columns:1fr}}
+@media(min-width:901px) and (max-width:1100px){.g3,.g4{grid-template-columns:1fr 1fr}}
+.fg{margin-bottom:9px}
+.fg label{display:block;font-family:'Bebas Neue',sans-serif;font-size:.62rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--tl);margin-bottom:2px}
+.fg input{width:100%;background:var(--inp);border:1px solid var(--bd);border-radius:6px;color:var(--t1);font-family:'JetBrains Mono',monospace;font-size:.9rem;font-weight:600;padding:7px 10px;transition:.2s}
+.fg input:focus{outline:none;border-color:var(--y);box-shadow:0 0 0 3px var(--yg)}
+.rr{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(46,48,56,.5);font-size:.83rem}
+.rr:last-child{border-bottom:none}
+.rr .lb{color:var(--t2)}
+.rr .vl{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:.85rem;color:var(--t1)}
+.rr.hi2{background:rgba(245,197,24,.05);border-radius:4px;padding:7px 6px;margin:-1px -6px;border-bottom:none!important}
+.rr.hi2 .lb{color:var(--t1);font-weight:600}
+.rr.hi2 .vl{color:var(--y);font-size:.95rem}
+.rr.sec-hd{padding:8px 0 3px;border-bottom:none}
+.rr.sec-hd .lb{font-family:'Bebas Neue',sans-serif;font-size:.7rem;letter-spacing:1px;text-transform:uppercase;color:var(--t3)}
+.sqft-in{display:flex;gap:10px;align-items:flex-end;margin-bottom:12px;flex-wrap:wrap}
+.sqft-in .fg{margin:0;flex:1;min-width:80px}
+.sqft-disp{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--y);white-space:nowrap;align-self:flex-end;padding-bottom:7px}
+.vtabs{display:flex;gap:4px;margin-bottom:12px;flex-wrap:wrap}
+.vt{font-family:'Bebas Neue',sans-serif;font-size:.68rem;letter-spacing:1px;text-transform:uppercase;padding:5px 10px;border:1.5px solid var(--bd2);border-radius:5px;background:var(--c2);color:var(--t3);cursor:pointer;transition:.2s}
+.vt:hover{border-color:rgba(245,197,24,.4);color:var(--t1)}
+.vt.ac{border-color:var(--y);background:var(--yg);color:var(--y)}
+.note{font-size:.72rem;color:var(--t3);font-style:italic;margin-top:4px}
+</style>
+</head>
+<body>
+
+<div class="hdr"><div class="hi">
+  <div><h1>CP Systems Calculator</h1><div class="sub">The Concrete Protector &mdash; Product Material Estimator</div></div>
+  <div style="text-align:right;font-size:.68rem;color:var(--t3)"><strong style="color:var(--t2)">The Concrete Protector</strong><br>Incredible Products, LLC</div>
+</div></div>
+
+<div class="nav"><div class="ni">
+  <button class="nb ac" onclick="go(0)"><span class="sn">1</span>GraniFlex</button>
+  <button class="nb" onclick="go(1)"><span class="sn">2</span>Metallic Marble</button>
+  <button class="nb" onclick="go(2)"><span class="sn">3</span>Resinous 1-2-3</button>
+  <button class="nb" onclick="go(3)"><span class="sn">4</span>Grand Flagstone</button>
+  <button class="nb" onclick="go(4)"><span class="sn">5</span>Tuscan Slate</button>
+  <button class="nb" onclick="go(5)"><span class="sn">6</span>Rustic Concrete Wood</button>
+  <button class="nb" onclick="go(6)"><span class="sn">7</span>CP Sealer</button>
+  <button class="nb" onclick="go(7)"><span class="sn">8</span>Protector Color Flakes</button>
+  <button class="nb" onclick="go(8)"><span class="sn">9</span>Poly Hard</button>
+</div></div>
+
+<div class="mc">
+
+<!-- ═══ PAGE 1: GRANIFLEX ═══ -->
+<div class="pg ac" id="p0">
+<div class="sh"><div class="sl">System 1</div><h2>GraniFlex</h2><p>ColorFlakes &amp; Quartz broadcast systems. Select sub-type and top coat variant.</p></div>
+
+<!-- Sub-type selector -->
+<div class="vtabs" id="gf-subs">
+  <button class="vt ac" onclick="gfSub(0)">ColorFlakes</button>
+  <button class="vt" onclick="gfSub(1)">Quartz — 1 Broadcast</button>
+  <button class="vt" onclick="gfSub(2)">Quartz — 2 Broadcasts</button>
+</div>
+
+<!-- ColorFlakes -->
+<div id="gf-0">
+  <div class="cd">
+    <div class="ct">&#9670; Square Footage</div>
+    <div class="sqft-in">
+      <div class="fg"><label>Direct Sq Ft</label><input type="number" id="gf0-sf" value="" placeholder="0" oninput="calcGF0()"></div>
+      <div style="align-self:flex-end;padding-bottom:10px;color:var(--t3);font-size:.8rem">— or —</div>
+      <div class="fg"><label>Length (ft)</label><input type="number" id="gf0-l" placeholder="0" oninput="calcGF0()"></div>
+      <div class="fg"><label>Width (ft)</label><input type="number" id="gf0-w" placeholder="0" oninput="calcGF0()"></div>
+      <div class="sqft-disp">= <span id="gf0-tot">0</span> sq ft</div>
+    </div>
+  </div>
+  <div class="g3">
+    <!-- SuperThane -->
+    <div class="cd">
+      <div class="ct" style="color:#60a5fa">SuperThane</div>
+      <div class="rr"><span class="lb">PermaFlex 1st Coat</span><span class="vl" id="gf0-st-pf1">0.00 gal</span></div>
+      <div class="rr"><span class="lb">PermaFlex 2nd Coat</span><span class="vl" id="gf0-st-pf2">0.00 gal</span></div>
+      <div class="rr hi2"><span class="lb">Total PermaFlex</span><span class="vl" id="gf0-st-pft">0.00 gal</span></div>
+      <div class="rr"><span class="lb">LRB Membrane (40 mil)</span><span class="vl" id="gf0-st-lrb">0.00 gal</span></div>
+      <div class="rr"><span class="lb">Color Flakes</span><span class="vl" id="gf0-st-cf">0.00 lbs</span></div>
+      <div class="rr"><span class="lb">SuperThane 1st Coat</span><span class="vl" id="gf0-st-1">0.00 gal</span></div>
+      <div class="rr"><span class="lb">SuperThane 2nd Coat</span><span class="vl" id="gf0-st-2">0.00 gal</span></div>
+      <div class="rr hi2"><span class="lb">Total SuperThane</span><span class="vl" id="gf0-st-t">0.00 gal</span></div>
+      <div class="rr"><span class="lb">Get-A-Grip Packs</span><span class="vl" id="gf0-st-gag">0.00 packs</span></div>
+      <div class="rr"><span class="lb">Get-A-Grip (tbsp)</span><span class="vl" id="gf0-st-tbsp">0.00 tbsp</span></div>
+      <div class="note">&#9651; Tire tracking may occur</div>
+    </div>
+    <!-- PERFECT Poly 90 -->
+    <div class="cd">
+      <div class="ct" style="color:#34d399">PERFECT Poly 90</div>
+      <div class="rr"><span class="lb">PermaFlex 1st Coat</span><span class="vl" id="gf0-pp-pf1">0.00 gal</span></div>
+      <div class="rr"><span class="lb">PermaFlex 2nd Coat</span><span class="vl" id="gf0-pp-pf2">0.00 gal</span></div>
+      <div class="rr hi2"><span class="lb">Total PermaFlex</span><span class="vl" id="gf0-pp-pft">0.00 gal</span></div>
+      <div class="rr"><span class="lb">LRB Membrane (40 mil)</span><span class="vl" id="gf0-pp-lrb">0.00 gal</span></div>
+      <div class="rr"><span class="lb">Color Flakes</span><span class="vl" id="gf0-pp-cf">0.00 lbs</span></div>
+      <div class="rr"><span class="lb">PERFECT Poly 90 1st Coat</span><span class="vl" id="gf0-pp-1">0.00 gal</span></div>
+      <div class="rr"><span class="lb">PERFECT Poly 90 2nd Coat</span><span class="vl" id="gf0-pp-2">0.00 gal</span></div>
+      <div class="rr hi2"><span class="lb">Total PERFECT Poly 90</span><span class="vl" id="gf0-pp-t">0.00 gal</span></div>
+      <div class="rr"><span class="lb">One and Done Top Coat</span><span class="vl" id="gf0-pp-oad">0.00 gal</span></div>
+      <div class="rr"><span class="lb">Get-A-Grip Packs</span><span class="vl" id="gf0-pp-gag">0.00 packs</span></div>
+      <div class="rr"><span class="lb">Get-A-Grip (tbsp)</span><span class="vl" id="gf0-pp-tbsp">0.00 tbsp</span></div>
+    </div>
+    <!-- Graniseal -->
+    <div class="cd">
+      <div class="ct" style="color:#fb923c">Graniseal</div>
+      <div class="rr"><span class="lb">PermaFlex 1st Coat</span><span class="vl" id="gf0-gs-pf1">0.00 gal</span></div>
+      <div class="rr"><span class="lb">PermaFlex 2nd Coat</span><span class="vl" id="gf0-gs-pf2">0.00 gal</span></div>
+      <div class="rr hi2"><span class="lb">Total PermaFlex</span><span class="vl" id="gf0-gs-pft">0.00 gal</span></div>
+      <div class="rr"><span class="lb">LRB Membrane (40 mil)</span><span class="vl" id="gf0-gs-lrb">0.00 gal</span></div>
+      <div class="rr"><span class="lb">Color Flakes</span><span class="vl" id="gf0-gs-cf">0.00 lbs</span></div>
+      <div class="rr"><span class="lb">Graniseal 1st Coat</span><span class="vl" id="gf0-gs-1">0.00 gal</span></div>
+      <div class="rr"><span class="lb">Graniseal 2nd Coat</span><span class="vl" id="gf0-gs-2">0.00 gal</span></div>
+      <div class="rr hi2"><span class="lb">Total Graniseal</span><span class="vl" id="gf0-gs-t">0.00 gal</span></div>
+      <div class="note">&#9888; Not for indoor use</div>
+    </div>
+  </div>
+</div>
+
+<!-- Quartz 1 Broadcast -->
+<div id="gf-1" style="display:none">
+  <div class="cd">
+    <div class="ct">&#9670; Square Footage</div>
+    <div class="sqft-in">
+      <div class="fg"><label>Direct Sq Ft</label><input type="number" id="gf1-sf" placeholder="0" oninput="calcGF1()"></div>
+      <div style="align-self:flex-end;padding-bottom:10px;color:var(--t3);font-size:.8rem">— or —</div>
+      <div class="fg"><label>Length (ft)</label><input type="number" id="gf1-l" placeholder="0" oninput="calcGF1()"></div>
+      <div class="fg"><label>Width (ft)</label><input type="number" id="gf1-w" placeholder="0" oninput="calcGF1()"></div>
+      <div class="sqft-disp">= <span id="gf1-tot">0</span> sq ft</div>
+    </div>
+  </div>
+  <div class="g3">
+    <div class="cd">
+      <div class="ct" style="color:#60a5fa">SuperThane</div>
+      <div class="rr"><span class="lb">PermaFlex 1st Coat</span><span class="vl" id="gf1-st-pf1">0.00 gal</span></div>
+      <div class="rr"><span class="lb">PermaFlex 2nd Coat</span><span class="vl" id="gf1-st-pf2">0.00 gal</span></div>
+      <div class="rr hi2"><span class="lb">Total PermaFlex</span><span class="vl" id="gf1-st-pft">0.00 gal</span></div>
+      <div class="rr"><span class="lb">LRB Membrane (40 mil)</span><span class="vl" id="gf1-st-lrb">0.00 gal</span></div>
+      <div class="rr"><span class="lb">Quartz</span><span class="vl" id="gf1-st-qz">0.00 lbs</span></div>
+      <div class="rr"><span class="lb">SuperThane 1st Coat</span><span class="vl" id="gf1-st-1">0.00 gal</span></div>
+      <div class="rr"><span class="lb">SuperThane 2nd Coat</span><span class="vl" id="gf1-st-2">0.00 gal</span></div>
+      <div class="rr hi2"><span class="lb">Total SuperThane</span><span class="vl" id="gf1-st-t">0.00 gal</span></div>
+      <div class="rr"><span class="lb">Get-A-Grip Packs</span><span class="vl" id="gf1-st-gag">0.00 packs</span></div>
+      <div class="rr"><span class="lb">Get-A-Grip (tbsp)</span><span class="vl" id="gf1-st-tbsp">0.00 tbsp</span></div>
+    </div>
+    <div class="cd">
+      <div class="ct" style="color:#34d399">PERFECT Poly 90</div>
+      <div class="rr"><span class="lb">PermaFlex 1st Coat</span><span class="vl" id="gf1-pp-pf1">0.00 gal</span></div>
+      <div class="rr"><span class="lb">PermaFlex 2nd Coat</span><span class="vl" id="gf1-pp-pf2">0.00 gal</span></div>
+      <div class="rr hi2"><span class="lb">Total PermaFlex</span><span class="vl" id="gf1-pp-pft">0.00 gal</span></div>
+      <div class="rr"><span class="lb">LRB Membrane (40 mil)</span><span class="vl" id="gf1-pp-lrb">0.00 gal</span></div>
+      <div class="rr"><span class="lb">Quartz</span><span class="vl" id="gf1-pp-qz">0.00 lbs</span></div>
+      <div class="rr"><span class="lb">PERFECT Poly 90 1st Coat</span><span class="vl" id="gf1-pp-1">0.00 gal</span></div>
+      <div class="rr"><span class="lb">PERFECT Poly 90 2nd Coat</span><span class="vl" id="gf1-pp-2">0.00 gal</span></div>
+      <div class="rr hi2"><span class="lb">Total PERFECT Poly 90</span><span class="vl" id="gf1-pp-t">0.00 gal</span></div>
+      <div class="rr"><span class="lb">One and Done Top Coat</span><span class="vl" id="gf1-pp-oad">0.00 gal</span></div>
+      <div class="rr"><span class="lb">Get-A-Grip Packs</span><span class="vl" id="gf1-pp-gag">0.00 packs</span></div>
+      <div class="rr"><span class="lb">Get-A-Grip (tbsp)</span><span class="vl" id="gf1-pp-tbsp">0.00 tbsp</span></div>
+    </div>
+    <div class="cd">
+      <div class="ct" style="color:#fb923c">Graniseal</div>
+      <div class="rr"><span class="lb">PermaFlex 1st Coat</span><span class="vl" id="gf1-gs-pf1">0.00 gal</span></div>
+      <div class="rr"><span class="lb">PermaFlex 2nd Coat</span><span class="vl" id="gf1-gs-pf2">0.00 gal</span></div>
+      <div class="rr hi2"><span class="lb">Total PermaFlex</span><span class="vl" id="gf1-gs-pft">0.00 gal</span></div>
+      <div class="rr"><span class="lb">LRB Membrane (40 mil)</span><span class="vl" id="gf1-gs-lrb">0.00 gal</span></div>
+      <div class="rr"><span class="lb">Quartz</span><span class="vl" id="gf1-gs-qz">0.00 lbs</span></div>
+      <div class="rr"><span class="lb">Graniseal 1st Coat</span><span class="vl" id="gf1-gs-1">0.00 gal</span></div>
+      <div class="rr"><span class="lb">Graniseal 2nd Coat</span><span class="vl" id="gf1-gs-2">0.00 gal</span></div>
+      <div class="rr hi2"><span class="lb">Total Graniseal</span><span class="vl" id="gf1-gs-t">0.00 gal</span></div>
+      <div class="note">&#9888; Not for indoor use</div>
+    </div>
+  </div>
+</div>
+
+<!-- Quartz 2 Broadcasts -->
+<div id="gf-2" style="display:none">
+  <div class="cd">
+    <div class="ct">&#9670; Square Footage</div>
+    <div class="sqft-in">
+      <div class="fg"><label>Direct Sq Ft</label><input type="number" id="gf2-sf" placeholder="0" oninput="calcGF2()"></div>
+      <div style="align-self:flex-end;padding-bottom:10px;color:var(--t3);font-size:.8rem">— or —</div>
+      <div class="fg"><label>Length (ft)</label><input type="number" id="gf2-l" placeholder="0" oninput="calcGF2()"></div>
+      <div class="fg"><label>Width (ft)</label><input type="number" id="gf2-w" placeholder="0" oninput="calcGF2()"></div>
+      <div class="sqft-disp">= <span id="gf2-tot">0</span> sq ft</div>
+    </div>
+  </div>
+  <div class="g3">
+    <div class="cd">
+      <div class="ct" style="color:#60a5fa">SuperThane</div>
+      <div class="rr"><span class="lb">PermaFlex 1st Coat</span><span class="vl" id="gf2-st-pf1">0.00 gal</span></div>
+      <div class="rr"><span class="lb">PermaFlex 2nd Coat</span><span class="vl" id="gf2-st-pf2">0.00 gal</span></div>
+      <div class="rr hi2"><span class="lb">Total PermaFlex</span><span class="vl" id="gf2-st-pft">0.00 gal</span></div>
+      <div class="rr"><span class="lb">LRB Membrane (40 mil)</span><span class="vl" id="gf2-st-lrb">0.00 gal</span></div>
+      <div class="rr"><span class="lb">1st Broadcast Quartz</span><span class="vl" id="gf2-st-q1">0.00 lbs</span></div>
+      <div class="rr"><span class="lb">SuperThane (between coats)</span><span class="vl" id="gf2-st-ic">0.00 gal</span></div>
+      <div class="rr"><span class="lb">2nd Broadcast Quartz</span><span class="vl" id="gf2-st-q2">0.00 lbs</span></div>
+      <div class="rr"><span class="lb">SuperThane 1st Top Coat</span><span class="vl" id="gf2-st-1">0.00 gal</span></div>
+      <div class="rr"><span class="lb">SuperThane 2nd Top Coat</span><span class="vl" id="gf2-st-2">0.00 gal</span></div>
+      <div class="rr hi2"><span class="lb">Total Quartz</span><span class="vl" id="gf2-st-qt">0.00 lbs</span></div>
+      <div class="rr hi2"><span class="lb">Total SuperThane</span><span class="vl" id="gf2-st-t">0.00 gal</span></div>
+      <div class="rr"><span class="lb">Get-A-Grip Packs</span><span class="vl" id="gf2-st-gag">0.00 packs</span></div>
+      <div class="rr"><span class="lb">Get-A-Grip (tbsp)</span><span class="vl" id="gf2-st-tbsp">0.00 tbsp</span></div>
+    </div>
+    <div class="cd">
+      <div class="ct" style="color:#34d399">PERFECT Poly 90</div>
+      <div class="rr"><span class="lb">PermaFlex 1st Coat</span><span class="vl" id="gf2-pp-pf1">0.00 gal</span></div>
+      <div class="rr"><span class="lb">PermaFlex 2nd Coat</span><span class="vl" id="gf2-pp-pf2">0.00 gal</span></div>
+      <div class="rr hi2"><span class="lb">Total PermaFlex</span><span class="vl" id="gf2-pp-pft">0.00 gal</span></div>
+      <div class="rr"><span class="lb">LRB Membrane (40 mil)</span><span class="vl" id="gf2-pp-lrb">0.00 gal</span></div>
+      <div class="rr"><span class="lb">1st Broadcast Quartz</span><span class="vl" id="gf2-pp-q1">0.00 lbs</span></div>
+      <div class="rr"><span class="lb">PERFECT Poly 90 (between coats)</span><span class="vl" id="gf2-pp-ic">0.00 gal</span></div>
+      <div class="rr"><span class="lb">2nd Broadcast Quartz</span><span class="vl" id="gf2-pp-q2">0.00 lbs</span></div>
+      <div class="rr"><span class="lb">PERFECT Poly 90 1st Top Coat</span><span class="vl" id="gf2-pp-1">0.00 gal</span></div>
+      <div class="rr"><span class="lb">PERFECT Poly 90 2nd Top Coat</span><span class="vl" id="gf2-pp-2">0.00 gal</span></div>
+      <div class="rr hi2"><span class="lb">Total Quartz</span><span class="vl" id="gf2-pp-qt">0.00 lbs</span></div>
+      <div class="rr hi2"><span class="lb">Total PERFECT Poly 90</span><span class="vl" id="gf2-pp-t">0.00 gal</span></div>
+      <div class="rr"><span class="lb">One and Done Top Coat</span><span class="vl" id="gf2-pp-oad">0.00 gal</span></div>
+      <div class="rr"><span class="lb">Get-A-Grip Packs</span><span class="vl" id="gf2-pp-gag">0.00 packs</span></div>
+      <div class="rr"><span class="lb">Get-A-Grip (tbsp)</span><span class="vl" id="gf2-pp-tbsp">0.00 tbsp</span></div>
+    </div>
+    <div class="cd">
+      <div class="ct" style="color:#fb923c">Graniseal</div>
+      <div class="rr"><span class="lb">PermaFlex 1st Coat</span><span class="vl" id="gf2-gs-pf1">0.00 gal</span></div>
+      <div class="rr"><span class="lb">PermaFlex 2nd Coat</span><span class="vl" id="gf2-gs-pf2">0.00 gal</span></div>
+      <div class="rr hi2"><span class="lb">Total PermaFlex</span><span class="vl" id="gf2-gs-pft">0.00 gal</span></div>
+      <div class="rr"><span class="lb">LRB Membrane (40 mil)</span><span class="vl" id="gf2-gs-lrb">0.00 gal</span></div>
+      <div class="rr"><span class="lb">1st Broadcast Quartz</span><span class="vl" id="gf2-gs-q1">0.00 lbs</span></div>
+      <div class="rr"><span class="lb">Graniseal (between coats)</span><span class="vl" id="gf2-gs-ic">0.00 gal</span></div>
+      <div class="rr"><span class="lb">2nd Broadcast Quartz</span><span class="vl" id="gf2-gs-q2">0.00 lbs</span></div>
+      <div class="rr"><span class="lb">Graniseal 1st Top Coat</span><span class="vl" id="gf2-gs-1">0.00 gal</span></div>
+      <div class="rr"><span class="lb">Graniseal 2nd Top Coat</span><span class="vl" id="gf2-gs-2">0.00 gal</span></div>
+      <div class="rr hi2"><span class="lb">Total Quartz</span><span class="vl" id="gf2-gs-qt">0.00 lbs</span></div>
+      <div class="rr hi2"><span class="lb">Total Graniseal</span><span class="vl" id="gf2-gs-t">0.00 gal</span></div>
+      <div class="note">&#9888; Not for indoor use</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══ PAGE 2: METALLIC MARBLE STAIN ═══ -->
+<div class="pg" id="p1">
+<div class="sh"><div class="sl">System 2</div><h2>Metallic Marble Stain</h2><p>Indoor only. Neat Coat Epoxy base with metallic pigment, multiple top coat options.</p></div>
+<div class="cd">
+  <div class="ct">&#9670; Square Footage (Indoor)</div>
+  <div class="sqft-in">
+    <div class="fg"><label>Direct Sq Ft</label><input type="number" id="mm-sf" placeholder="0" oninput="calcMM()"></div>
+    <div style="align-self:flex-end;padding-bottom:10px;color:var(--t3);font-size:.8rem">— or —</div>
+    <div class="fg"><label>Length (ft)</label><input type="number" id="mm-l" placeholder="0" oninput="calcMM()"></div>
+    <div class="fg"><label>Width (ft)</label><input type="number" id="mm-w" placeholder="0" oninput="calcMM()"></div>
+    <div class="sqft-disp">= <span id="mm-tot">0</span> sq ft</div>
+  </div>
+</div>
+<div class="g2">
+  <div class="cd">
+    <div class="ct">Neat Coat Epoxy</div>
+    <div class="rr sec-hd"><span class="lb">Step 1 — Prime Coat</span></div>
+    <div class="rr"><span class="lb">Neat Coat Epoxy — Prime Coat</span><span class="vl" id="mm-nc1">0.00 gal</span></div>
+    <div class="rr"><span class="lb">Metallic Pigment</span><span class="vl" id="mm-mp1">0.00 jars</span></div>
+    <div class="rr sec-hd"><span class="lb">Step 2 — Money Coat</span></div>
+    <div class="rr"><span class="lb">Neat Coat Epoxy — Money Coat</span><span class="vl" id="mm-nc2">0.00 gal</span></div>
+    <div class="rr"><span class="lb">Metallic Pigment</span><span class="vl" id="mm-mp2">0.00 jars</span></div>
+    <div class="rr hi2"><span class="lb">Total Neat Coat Epoxy</span><span class="vl" id="mm-nct">0.00 gal</span></div>
+    <div class="rr hi2"><span class="lb">Total Metallic Pigment</span><span class="vl" id="mm-mpt">0.00 jars</span></div>
+  </div>
+  <div class="cd">
+    <div class="ct">Step 3 — Top Coat Options</div>
+    <div class="rr"><span class="lb">221 WB Satin Urethane</span><span class="vl" id="mm-tc1">0.00 gal</span></div>
+    <div class="rr"><span class="lb">421 SB Gloss Urethane</span><span class="vl" id="mm-tc2">0.00 gal</span></div>
+    <div class="rr"><span class="lb">Acrylic Floor Finish</span><span class="vl" id="mm-tc3">0.00 gal</span></div>
+    <div class="rr"><span class="lb">Neat Coat (top coat option)</span><span class="vl" id="mm-tc4">0.00 gal</span></div>
+    <div class="note">Choose one top coat option above</div>
+  </div>
+</div>
+</div>
+
+<!-- ═══ PAGE 3: RESINOUS 1-2-3 FLOORING ═══ -->
+<div class="pg" id="p2">
+<div class="sh"><div class="sl">System 3</div><h2>Resinous 1-2-3 Flooring</h2><p>Indoor only. Base coat epoxy + two Protectorthane color coats.</p></div>
+<div class="cd">
+  <div class="ct">&#9670; Square Footage — up to 2 areas</div>
+  <div class="sqft-in">
+    <div class="fg"><label>Direct Sq Ft</label><input type="number" id="r3-sf" placeholder="0" oninput="calcR3()"></div>
+    <div style="align-self:flex-end;padding-bottom:10px;color:var(--t3);font-size:.8rem">+</div>
+    <div class="fg"><label>Area 1 Length (ft)</label><input type="number" id="r3-l1" placeholder="0" oninput="calcR3()"></div>
+    <div class="fg"><label>Area 1 Width (ft)</label><input type="number" id="r3-w1" placeholder="0" oninput="calcR3()"></div>
+    <div style="align-self:flex-end;padding-bottom:10px;color:var(--t3);font-size:.8rem">+</div>
+    <div class="fg"><label>Area 2 Length (ft)</label><input type="number" id="r3-l2" placeholder="0" oninput="calcR3()"></div>
+    <div class="fg"><label>Area 2 Width (ft)</label><input type="number" id="r3-w2" placeholder="0" oninput="calcR3()"></div>
+    <div class="sqft-disp">= <span id="r3-tot">0</span> sq ft</div>
+  </div>
+</div>
+<div class="cd">
+  <div class="ct">Materials</div>
+  <div class="rr"><span class="lb">1. Base Coat Epoxy</span><span class="vl" id="r3-bc">0.00 gal</span></div>
+  <div class="rr"><span class="lb">2. Protectorthane Color Coat 1</span><span class="vl" id="r3-c1">0.00 gal</span></div>
+  <div class="rr"><span class="lb">3. Protectorthane Color Coat 2</span><span class="vl" id="r3-c2">0.00 gal</span></div>
+  <div class="rr hi2"><span class="lb">Total Protectorthane</span><span class="vl" id="r3-ct">0.00 gal</span></div>
+</div>
+</div>
+
+<!-- ═══ PAGE 4: GRAND FLAGSTONE ═══ -->
+<div class="pg" id="p3">
+<div class="sh"><div class="sl">System 4</div><h2>Grand Flagstone</h2><p>Indoor / Outdoor. Three-step texture system with staining and sealer options.</p></div>
+<div class="cd">
+  <div class="ct">&#9670; Square Footage</div>
+  <div class="sqft-in">
+    <div class="fg"><label>Direct Sq Ft</label><input type="number" id="gfs-sf" placeholder="0" oninput="calcGFS()"></div>
+    <div style="align-self:flex-end;padding-bottom:10px;color:var(--t3);font-size:.8rem">— or —</div>
+    <div class="fg"><label>Length (ft)</label><input type="number" id="gfs-l" placeholder="0" oninput="calcGFS()"></div>
+    <div class="fg"><label>Width (ft)</label><input type="number" id="gfs-w" placeholder="0" oninput="calcGFS()"></div>
+    <div class="sqft-disp">= <span id="gfs-tot">0</span> sq ft</div>
+  </div>
+</div>
+<div class="g2">
+  <div class="cd">
+    <div class="ct">Steps 1–3: Materials</div>
+    <div class="rr sec-hd"><span class="lb">1. Grout Coat</span></div>
+    <div class="rr"><span class="lb">Bags Texture Mix</span><span class="vl" id="gfs-g-tm">0.00 bags</span></div>
+    <div class="rr"><span class="lb">Concentrate High Density Resin</span><span class="vl" id="gfs-g-r">0.00 gal</span></div>
+    <div class="rr"><span class="lb">Black Mineral Pigment</span><span class="vl" id="gfs-g-bmp">0.00 oz</span></div>
+    <div class="rr"><span class="lb">Stencil Tape — Large Pattern</span><span class="vl" id="gfs-st-lg">0.00 rolls</span></div>
+    <div class="rr"><span class="lb">Stencil Tape — Small Pattern</span><span class="vl" id="gfs-st-sm">0.00 rolls</span></div>
+    <div class="rr sec-hd"><span class="lb">2. Texture Coat</span></div>
+    <div class="rr"><span class="lb">Bags Texture Mix</span><span class="vl" id="gfs-t-tm">0.00 bags</span></div>
+    <div class="rr"><span class="lb">Concentrate High Density Resin</span><span class="vl" id="gfs-t-r">0.00 gal</span></div>
+    <div class="rr"><span class="lb">Buff Mineral Pigment</span><span class="vl" id="gfs-t-bfp">0.00 oz</span></div>
+    <div class="rr sec-hd"><span class="lb">3. Staining</span></div>
+    <div class="rr"><span class="lb">Stain</span><span class="vl" id="gfs-st">0.00 gal</span></div>
+    <div class="rr sec-hd"><span class="lb">Totals</span></div>
+    <div class="rr hi2"><span class="lb">Total Texture Mix</span><span class="vl" id="gfs-tm-t">0.00 bags</span></div>
+    <div class="rr hi2"><span class="lb">Total Resin</span><span class="vl" id="gfs-r-t">0.00 gal</span></div>
+    <div class="rr hi2"><span class="lb">Total Black Pigment</span><span class="vl" id="gfs-bp-t">0.00 oz</span></div>
+    <div class="rr hi2"><span class="lb">Total Buff Pigment</span><span class="vl" id="gfs-bfp-t">0.00 oz</span></div>
+  </div>
+  <div class="cd">
+    <div class="ct">Sealer Options (choose one)</div>
+    <div class="rr sec-hd"><span class="lb">Outdoor — Acrylic 25</span></div>
+    <div class="rr"><span class="lb">1st Coat — Acrylic 25</span><span class="vl" id="gfs-ac1">0.00 gal</span></div>
+    <div class="rr"><span class="lb">Optional 2nd Coat — Acrylic 25</span><span class="vl" id="gfs-ac2">0.00 gal</span></div>
+    <div class="rr hi2"><span class="lb">Total Acrylic</span><span class="vl" id="gfs-act">0.00 gal</span></div>
+    <div class="rr sec-hd"><span class="lb">Smooth — Neat Coat Epoxy</span></div>
+    <div class="rr"><span class="lb">1st Coat — Neat Coat Epoxy</span><span class="vl" id="gfs-nc1">0.00 gal</span></div>
+    <div class="rr"><span class="lb">Optional 2nd Coat — Neat Coat Epoxy</span><span class="vl" id="gfs-nc2">0.00 gal</span></div>
+    <div class="rr hi2"><span class="lb">Total Neat Coat Epoxy</span><span class="vl" id="gfs-nct">0.00 gal</span></div>
+    <div class="rr sec-hd"><span class="lb">WB 4:1 Option</span></div>
+    <div class="rr"><span class="lb">WB 4:1</span><span class="vl" id="gfs-wb">0.00 gal</span></div>
+    <div class="rr"><span class="lb">Get-A-Grip Packs</span><span class="vl" id="gfs-gag">0.00 packs</span></div>
+    <div class="rr"><span class="lb">Get-A-Grip (tbsp)</span><span class="vl" id="gfs-tbsp">0.00 tbsp</span></div>
+  </div>
+</div>
+</div>
+
+<!-- ═══ PAGE 5: TUSCAN SLATE ═══ -->
+<div class="pg" id="p4">
+<div class="sh"><div class="sl">System 5</div><h2>Tuscan Slate</h2><p>Indoor / Outdoor. Same process as Grand Flagstone with adjusted texture coat coverage.</p></div>
+<div class="cd">
+  <div class="ct">&#9670; Square Footage</div>
+  <div class="sqft-in">
+    <div class="fg"><label>Direct Sq Ft</label><input type="number" id="ts-sf" placeholder="0" oninput="calcTS()"></div>
+    <div style="align-self:flex-end;padding-bottom:10px;color:var(--t3);font-size:.8rem">— or —</div>
+    <div class="fg"><label>Length (ft)</label><input type="number" id="ts-l" placeholder="0" oninput="calcTS()"></div>
+    <div class="fg"><label>Width (ft)</label><input type="number" id="ts-w" placeholder="0" oninput="calcTS()"></div>
+    <div class="sqft-disp">= <span id="ts-tot">0</span> sq ft</div>
+  </div>
+</div>
+<div class="g2">
+  <div class="cd">
+    <div class="ct">Steps 1–3: Materials</div>
+    <div class="rr sec-hd"><span class="lb">1. Grout Coat (1/4" and 1/2" Stencil Tape)</span></div>
+    <div class="rr"><span class="lb">Bags Texture Mix</span><span class="vl" id="ts-g-tm">0.00 bags</span></div>
+    <div class="rr"><span class="lb">Concentrate High Density Resin</span><span class="vl" id="ts-g-r">0.00 gal</span></div>
+    <div class="rr"><span class="lb">Black Mineral Pigment</span><span class="vl" id="ts-g-bmp">0.00 oz</span></div>
+    <div class="rr"><span class="lb">Stencil Tape — Large Pattern</span><span class="vl" id="ts-st-lg">0.00 rolls</span></div>
+    <div class="rr"><span class="lb">Stencil Tape — Small Pattern</span><span class="vl" id="ts-st-sm">0.00 rolls</span></div>
+    <div class="rr sec-hd"><span class="lb">2. Texture Coat</span></div>
+    <div class="rr"><span class="lb">Bags Texture Mix</span><span class="vl" id="ts-t-tm">0.00 bags</span></div>
+    <div class="rr"><span class="lb">Concentrate High Density Resin</span><span class="vl" id="ts-t-r">0.00 gal</span></div>
+    <div class="rr"><span class="lb">Buff Mineral Pigment</span><span class="vl" id="ts-t-bfp">0.00 oz</span></div>
+    <div class="rr sec-hd"><span class="lb">3. Staining</span></div>
+    <div class="rr"><span class="lb">Stain</span><span class="vl" id="ts-st">0.00 gal</span></div>
+    <div class="rr sec-hd"><span class="lb">Totals</span></div>
+    <div class="rr hi2"><span class="lb">Total Texture Mix</span><span class="vl" id="ts-tm-t">0.00 bags</span></div>
+    <div class="rr hi2"><span class="lb">Total Resin</span><span class="vl" id="ts-r-t">0.00 gal</span></div>
+    <div class="rr hi2"><span class="lb">Total Black Pigment</span><span class="vl" id="ts-bp-t">0.00 oz</span></div>
+    <div class="rr hi2"><span class="lb">Total Buff Pigment</span><span class="vl" id="ts-bfp-t">0.00 oz</span></div>
+  </div>
+  <div class="cd">
+    <div class="ct">Sealer Options (choose one)</div>
+    <div class="rr sec-hd"><span class="lb">Outdoor — Acrylic 25</span></div>
+    <div class="rr"><span class="lb">1st Coat — Acrylic 25</span><span class="vl" id="ts-ac1">0.00 gal</span></div>
+    <div class="rr"><span class="lb">Optional 2nd Coat — Acrylic 25</span><span class="vl" id="ts-ac2">0.00 gal</span></div>
+    <div class="rr hi2"><span class="lb">Total Acrylic</span><span class="vl" id="ts-act">0.00 gal</span></div>
+    <div class="rr sec-hd"><span class="lb">Smooth — Neat Coat Epoxy</span></div>
+    <div class="rr"><span class="lb">1st Coat — Neat Coat Epoxy</span><span class="vl" id="ts-nc1">0.00 gal</span></div>
+    <div class="rr"><span class="lb">Optional 2nd Coat — Neat Coat Epoxy</span><span class="vl" id="ts-nc2">0.00 gal</span></div>
+    <div class="rr hi2"><span class="lb">Total Neat Coat Epoxy</span><span class="vl" id="ts-nct">0.00 gal</span></div>
+    <div class="rr sec-hd"><span class="lb">WB 4:1 Option</span></div>
+    <div class="rr"><span class="lb">WB 4:1</span><span class="vl" id="ts-wb">0.00 gal</span></div>
+    <div class="rr"><span class="lb">Get-A-Grip Packs</span><span class="vl" id="ts-gag">0.00 packs</span></div>
+    <div class="rr"><span class="lb">Get-A-Grip (tbsp)</span><span class="vl" id="ts-tbsp">0.00 tbsp</span></div>
+  </div>
+</div>
+</div>
+
+<!-- ═══ PAGE 6: RUSTIC CONCRETE WOOD ═══ -->
+<div class="pg" id="p5">
+<div class="sh"><div class="sl">System 6</div><h2>Rustic Concrete Wood</h2><p>Indoor / Outdoor. Three-step texture system — all texture coats at 200 sq ft/bag coverage.</p></div>
+<div class="cd">
+  <div class="ct">&#9670; Square Footage</div>
+  <div class="sqft-in">
+    <div class="fg"><label>Direct Sq Ft</label><input type="number" id="rcw-sf" placeholder="0" oninput="calcRCW()"></div>
+    <div style="align-self:flex-end;padding-bottom:10px;color:var(--t3);font-size:.8rem">— or —</div>
+    <div class="fg"><label>Length (ft)</label><input type="number" id="rcw-l" placeholder="0" oninput="calcRCW()"></div>
+    <div class="fg"><label>Width (ft)</label><input type="number" id="rcw-w" placeholder="0" oninput="calcRCW()"></div>
+    <div class="sqft-disp">= <span id="rcw-tot">0</span> sq ft</div>
+  </div>
+</div>
+<div class="g2">
+  <div class="cd">
+    <div class="ct">Steps 1–3: Materials</div>
+    <div class="rr sec-hd"><span class="lb">1. Grout Coat (1/4" or 1/2" Stencil Tape)</span></div>
+    <div class="rr"><span class="lb">Bags Texture Mix</span><span class="vl" id="rcw-g-tm">0.00 bags</span></div>
+    <div class="rr"><span class="lb">Concentrate High Density Resin</span><span class="vl" id="rcw-g-r">0.00 gal</span></div>
+    <div class="rr"><span class="lb">Black Mineral Pigment</span><span class="vl" id="rcw-g-bmp">0.00 oz</span></div>
+    <div class="rr"><span class="lb">Stencil Tape — Large Pattern</span><span class="vl" id="rcw-st-lg">0.00 rolls</span></div>
+    <div class="rr"><span class="lb">Stencil Tape — Small Pattern</span><span class="vl" id="rcw-st-sm">0.00 rolls</span></div>
+    <div class="rr sec-hd"><span class="lb">2. Texture Coat</span></div>
+    <div class="rr"><span class="lb">Bags Texture Mix</span><span class="vl" id="rcw-t-tm">0.00 bags</span></div>
+    <div class="rr"><span class="lb">Concentrate High Density Resin</span><span class="vl" id="rcw-t-r">0.00 gal</span></div>
+    <div class="rr"><span class="lb">Buff Mineral Pigment</span><span class="vl" id="rcw-t-bfp">0.00 oz</span></div>
+    <div class="rr sec-hd"><span class="lb">3. Staining</span></div>
+    <div class="rr"><span class="lb">Stain</span><span class="vl" id="rcw-st">0.00 gal</span></div>
+    <div class="rr sec-hd"><span class="lb">Totals</span></div>
+    <div class="rr hi2"><span class="lb">Total Texture Mix</span><span class="vl" id="rcw-tm-t">0.00 bags</span></div>
+    <div class="rr hi2"><span class="lb">Total Resin</span><span class="vl" id="rcw-r-t">0.00 gal</span></div>
+    <div class="rr hi2"><span class="lb">Total Black Pigment</span><span class="vl" id="rcw-bp-t">0.00 oz</span></div>
+    <div class="rr hi2"><span class="lb">Total Buff Pigment</span><span class="vl" id="rcw-bfp-t">0.00 oz</span></div>
+  </div>
+  <div class="cd">
+    <div class="ct">Sealer Options (choose one)</div>
+    <div class="rr sec-hd"><span class="lb">Outdoor — Acrylic 25</span></div>
+    <div class="rr"><span class="lb">1st Coat — Acrylic 25</span><span class="vl" id="rcw-ac1">0.00 gal</span></div>
+    <div class="rr"><span class="lb">Optional 2nd Coat — Acrylic 25</span><span class="vl" id="rcw-ac2">0.00 gal</span></div>
+    <div class="rr hi2"><span class="lb">Total Acrylic</span><span class="vl" id="rcw-act">0.00 gal</span></div>
+    <div class="rr sec-hd"><span class="lb">Smooth — Neat Coat Epoxy</span></div>
+    <div class="rr"><span class="lb">1st Coat — Neat Coat Epoxy</span><span class="vl" id="rcw-nc1">0.00 gal</span></div>
+    <div class="rr"><span class="lb">Optional 2nd Coat — Neat Coat Epoxy</span><span class="vl" id="rcw-nc2">0.00 gal</span></div>
+    <div class="rr hi2"><span class="lb">Total Neat Coat Epoxy</span><span class="vl" id="rcw-nct">0.00 gal</span></div>
+    <div class="rr sec-hd"><span class="lb">WB 4:1 Option</span></div>
+    <div class="rr"><span class="lb">WB 4:1</span><span class="vl" id="rcw-wb">0.00 gal</span></div>
+    <div class="rr"><span class="lb">Get-A-Grip Packs</span><span class="vl" id="rcw-gag">0.00 packs</span></div>
+    <div class="rr"><span class="lb">Get-A-Grip (tbsp)</span><span class="vl" id="rcw-tbsp">0.00 tbsp</span></div>
+  </div>
+</div>
+</div>
+
+<!-- ═══ PAGE 7: CP SEALER ═══ -->
+<div class="pg" id="p6">
+<div class="sh"><div class="sl">System 7</div><h2>CP Sealer</h2><p>The Concrete Protector Penetrating Hydrophobic Sealer. Mixed 1 qt sealer : 9 qt water.</p></div>
+<div class="cd">
+  <div class="ct">&#9670; Square Footage</div>
+  <div class="sqft-in">
+    <div class="fg"><label>Direct Sq Ft</label><input type="number" id="cps-sf" placeholder="0" oninput="calcCPS()"></div>
+    <div style="align-self:flex-end;padding-bottom:10px;color:var(--t3);font-size:.8rem">— or —</div>
+    <div class="fg"><label>Length (ft)</label><input type="number" id="cps-l" placeholder="0" oninput="calcCPS()"></div>
+    <div class="fg"><label>Width (ft)</label><input type="number" id="cps-w" placeholder="0" oninput="calcCPS()"></div>
+    <div class="sqft-disp">= <span id="cps-tot">0</span> sq ft</div>
+  </div>
+</div>
+<div class="cd" style="max-width:420px">
+  <div class="ct">Materials</div>
+  <div class="rr hi2"><span class="lb">CP Sealer</span><span class="vl" id="cps-s">0.00 quarts</span></div>
+  <div class="rr hi2"><span class="lb">Water</span><span class="vl" id="cps-w2">0.00 gal</span></div>
+  <div class="note" style="margin-top:8px">Coverage: 400 sq ft per quart of sealer concentrate &bull; Mix ratio: 1 qt sealer per 9 qt water</div>
+</div>
+</div>
+
+<!-- ═══ PAGE 8: PROTECTOR COLOR FLAKES ═══ -->
+<div class="pg" id="p7">
+<div class="sh"><div class="sl">System 8</div><h2>Protector Color Flakes</h2><p>Color Flakes broadcast or Quartz Double Broadcast. Four top coat variants.</p></div>
+<div class="vtabs" id="pcf-subs">
+  <button class="vt ac" onclick="pcfSub(0)">Color Flakes</button>
+  <button class="vt" onclick="pcfSub(1)">Quartz — Double Broadcast</button>
+</div>
+
+<!-- Color Flakes -->
+<div id="pcf-0">
+  <div class="cd">
+    <div class="ct">&#9670; Square Footage</div>
+    <div class="sqft-in">
+      <div class="fg"><label>Direct Sq Ft</label><input type="number" id="pcf0-sf" placeholder="0" oninput="calcPCF0()"></div>
+      <div style="align-self:flex-end;padding-bottom:10px;color:var(--t3);font-size:.8rem">— or —</div>
+      <div class="fg"><label>Length (ft)</label><input type="number" id="pcf0-l" placeholder="0" oninput="calcPCF0()"></div>
+      <div class="fg"><label>Width (ft)</label><input type="number" id="pcf0-w" placeholder="0" oninput="calcPCF0()"></div>
+      <div class="sqft-disp">= <span id="pcf0-tot">0</span> sq ft</div>
+    </div>
+  </div>
+  <div class="g4">
+    <div class="cd">
+      <div class="ct" style="color:#60a5fa">SuperThane</div>
+      <div class="rr"><span class="lb">Base Coat Epoxy</span><span class="vl" id="pcf0-st-bc">0.00 gal</span></div>
+      <div class="rr"><span class="lb">Color Flakes</span><span class="vl" id="pcf0-st-cf">0.00 lbs</span></div>
+      <div class="rr"><span class="lb">SuperThane 1st Coat</span><span class="vl" id="pcf0-st-1">0.00 gal</span></div>
+      <div class="rr"><span class="lb">SuperThane 2nd Coat</span><span class="vl" id="pcf0-st-2">0.00 gal</span></div>
+      <div class="rr hi2"><span class="lb">Total SuperThane</span><span class="vl" id="pcf0-st-t">0.00 gal</span></div>
+      <div class="rr"><span class="lb">Get-A-Grip Packs</span><span class="vl" id="pcf0-st-gag">0.00 packs</span></div>
+      <div class="rr"><span class="lb">Get-A-Grip (tbsp)</span><span class="vl" id="pcf0-st-tbsp">0.00 tbsp</span></div>
+    </div>
+    <div class="cd">
+      <div class="ct" style="color:#34d399">PERFECT Poly 90</div>
+      <div class="rr"><span class="lb">Base Coat Epoxy</span><span class="vl" id="pcf0-pp-bc">0.00 gal</span></div>
+      <div class="rr"><span class="lb">Color Flakes</span><span class="vl" id="pcf0-pp-cf">0.00 lbs</span></div>
+      <div class="rr"><span class="lb">PERFECT Poly 90 1st Coat</span><span class="vl" id="pcf0-pp-1">0.00 gal</span></div>
+      <div class="rr"><span class="lb">PERFECT Poly 90 2nd Coat</span><span class="vl" id="pcf0-pp-2">0.00 gal</span></div>
+      <div class="rr hi2"><span class="lb">Total PERFECT Poly 90</span><span class="vl" id="pcf0-pp-t">0.00 gal</span></div>
+      <div class="rr"><span class="lb">One and Done Top Coat</span><span class="vl" id="pcf0-pp-oad">0.00 gal</span></div>
+      <div class="rr"><span class="lb">Get-A-Grip Packs</span><span class="vl" id="pcf0-pp-gag">0.00 packs</span></div>
+      <div class="rr"><span class="lb">Get-A-Grip (tbsp)</span><span class="vl" id="pcf0-pp-tbsp">0.00 tbsp</span></div>
+    </div>
+    <div class="cd">
+      <div class="ct" style="color:#fb923c">Protectorthane</div>
+      <div class="rr"><span class="lb">Base Coat Epoxy</span><span class="vl" id="pcf0-pt-bc">0.00 gal</span></div>
+      <div class="rr"><span class="lb">Color Flakes</span><span class="vl" id="pcf0-pt-cf">0.00 lbs</span></div>
+      <div class="rr"><span class="lb">Protectorthane 1st Coat</span><span class="vl" id="pcf0-pt-1">0.00 gal</span></div>
+      <div class="rr"><span class="lb">Protectorthane 2nd Coat</span><span class="vl" id="pcf0-pt-2">0.00 gal</span></div>
+      <div class="rr hi2"><span class="lb">Total Protectorthane</span><span class="vl" id="pcf0-pt-t">0.00 gal</span></div>
+      <div class="rr"><span class="lb">Get-A-Grip Packs</span><span class="vl" id="pcf0-pt-gag">0.00 packs</span></div>
+      <div class="rr"><span class="lb">Get-A-Grip (tbsp)</span><span class="vl" id="pcf0-pt-tbsp">0.00 tbsp</span></div>
+    </div>
+    <div class="cd">
+      <div class="ct" style="color:#a78bfa">Neat Coat</div>
+      <div class="rr"><span class="lb">Base Coat Epoxy</span><span class="vl" id="pcf0-nc-bc">0.00 gal</span></div>
+      <div class="rr"><span class="lb">Color Flakes</span><span class="vl" id="pcf0-nc-cf">0.00 lbs</span></div>
+      <div class="rr"><span class="lb">Neat Coat 1 Coat</span><span class="vl" id="pcf0-nc-1">0.00 gal</span></div>
+      <div class="rr sec-hd"><span class="lb">Seal Coat Options</span></div>
+      <div class="rr"><span class="lb">221 WB Satin Urethane</span><span class="vl" id="pcf0-nc-wb">0.00 gal</span></div>
+      <div class="rr"><span class="lb">421 SB Gloss Urethane</span><span class="vl" id="pcf0-nc-sb">0.00 gal</span></div>
+      <div class="rr"><span class="lb">Acrylic Floor Finish</span><span class="vl" id="pcf0-nc-af">0.00 gal</span></div>
+      <div class="rr"><span class="lb">Get-A-Grip (WB &amp; WS)</span><span class="vl" id="pcf0-nc-gag">0.00 packs</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- Quartz Double Broadcast -->
+<div id="pcf-1" style="display:none">
+  <div class="cd">
+    <div class="ct">&#9670; Square Footage</div>
+    <div class="sqft-in">
+      <div class="fg"><label>Direct Sq Ft</label><input type="number" id="pcf1-sf" placeholder="0" oninput="calcPCF1()"></div>
+      <div style="align-self:flex-end;padding-bottom:10px;color:var(--t3);font-size:.8rem">— or —</div>
+      <div class="fg"><label>Length (ft)</label><input type="number" id="pcf1-l" placeholder="0" oninput="calcPCF1()"></div>
+      <div class="fg"><label>Width (ft)</label><input type="number" id="pcf1-w" placeholder="0" oninput="calcPCF1()"></div>
+      <div class="sqft-disp">= <span id="pcf1-tot">0</span> sq ft</div>
+    </div>
+  </div>
+  <div class="g4">
+    <div class="cd">
+      <div class="ct" style="color:#60a5fa">SuperThane</div>
+      <div class="rr"><span class="lb">Base Coat Epoxy</span><span class="vl" id="pcf1-st-bc">0.00 gal</span></div>
+      <div class="rr"><span class="lb">1st Broadcast Quartz</span><span class="vl" id="pcf1-st-q1">0.00 lbs</span></div>
+      <div class="rr"><span class="lb">SuperThane (intercoat)</span><span class="vl" id="pcf1-st-ic">0.00 gal</span></div>
+      <div class="rr"><span class="lb">2nd Broadcast Quartz</span><span class="vl" id="pcf1-st-q2">0.00 lbs</span></div>
+      <div class="rr"><span class="lb">SuperThane 1st Top Coat</span><span class="vl" id="pcf1-st-1">0.00 gal</span></div>
+      <div class="rr"><span class="lb">SuperThane 2nd Top Coat</span><span class="vl" id="pcf1-st-2">0.00 gal</span></div>
+      <div class="rr hi2"><span class="lb">Total Quartz</span><span class="vl" id="pcf1-st-qt">0.00 lbs</span></div>
+      <div class="rr hi2"><span class="lb">Total SuperThane</span><span class="vl" id="pcf1-st-t">0.00 gal</span></div>
+      <div class="rr"><span class="lb">Get-A-Grip Packs</span><span class="vl" id="pcf1-st-gag">0.00 packs</span></div>
+      <div class="rr"><span class="lb">Get-A-Grip (tbsp)</span><span class="vl" id="pcf1-st-tbsp">0.00 tbsp</span></div>
+    </div>
+    <div class="cd">
+      <div class="ct" style="color:#34d399">PERFECT Poly 90</div>
+      <div class="rr"><span class="lb">Base Coat Epoxy</span><span class="vl" id="pcf1-pp-bc">0.00 gal</span></div>
+      <div class="rr"><span class="lb">1st Broadcast Quartz</span><span class="vl" id="pcf1-pp-q1">0.00 lbs</span></div>
+      <div class="rr"><span class="lb">PERFECT Poly 90 (intercoat)</span><span class="vl" id="pcf1-pp-ic">0.00 gal</span></div>
+      <div class="rr"><span class="lb">2nd Broadcast Quartz</span><span class="vl" id="pcf1-pp-q2">0.00 lbs</span></div>
+      <div class="rr"><span class="lb">PERFECT Poly 90 1st Top Coat</span><span class="vl" id="pcf1-pp-1">0.00 gal</span></div>
+      <div class="rr"><span class="lb">PERFECT Poly 90 2nd Top Coat</span><span class="vl" id="pcf1-pp-2">0.00 gal</span></div>
+      <div class="rr hi2"><span class="lb">Total Quartz</span><span class="vl" id="pcf1-pp-qt">0.00 lbs</span></div>
+      <div class="rr hi2"><span class="lb">Total PERFECT Poly 90</span><span class="vl" id="pcf1-pp-t">0.00 gal</span></div>
+      <div class="rr"><span class="lb">One and Done Top Coat</span><span class="vl" id="pcf1-pp-oad">0.00 gal</span></div>
+      <div class="rr"><span class="lb">Get-A-Grip Packs</span><span class="vl" id="pcf1-pp-gag">0.00 packs</span></div>
+      <div class="rr"><span class="lb">Get-A-Grip (tbsp)</span><span class="vl" id="pcf1-pp-tbsp">0.00 tbsp</span></div>
+    </div>
+    <div class="cd">
+      <div class="ct" style="color:#fb923c">Protectorthane</div>
+      <div class="rr"><span class="lb">Base Coat Epoxy</span><span class="vl" id="pcf1-pt-bc">0.00 gal</span></div>
+      <div class="rr"><span class="lb">1st Broadcast Quartz</span><span class="vl" id="pcf1-pt-q1">0.00 lbs</span></div>
+      <div class="rr"><span class="lb">Protectorthane (intercoat)</span><span class="vl" id="pcf1-pt-ic">0.00 gal</span></div>
+      <div class="rr"><span class="lb">2nd Broadcast Quartz</span><span class="vl" id="pcf1-pt-q2">0.00 lbs</span></div>
+      <div class="rr"><span class="lb">Protectorthane 1st Top Coat</span><span class="vl" id="pcf1-pt-1">0.00 gal</span></div>
+      <div class="rr"><span class="lb">Protectorthane 2nd Top Coat</span><span class="vl" id="pcf1-pt-2">0.00 gal</span></div>
+      <div class="rr hi2"><span class="lb">Total Quartz</span><span class="vl" id="pcf1-pt-qt">0.00 lbs</span></div>
+      <div class="rr hi2"><span class="lb">Total Protectorthane</span><span class="vl" id="pcf1-pt-t">0.00 gal</span></div>
+      <div class="rr"><span class="lb">Get-A-Grip Packs</span><span class="vl" id="pcf1-pt-gag">0.00 packs</span></div>
+      <div class="rr"><span class="lb">Get-A-Grip (tbsp)</span><span class="vl" id="pcf1-pt-tbsp">0.00 tbsp</span></div>
+    </div>
+    <div class="cd">
+      <div class="ct" style="color:#a78bfa">Neat Coat</div>
+      <div class="rr"><span class="lb">Base Coat Epoxy</span><span class="vl" id="pcf1-nc-bc">0.00 gal</span></div>
+      <div class="rr"><span class="lb">1st Broadcast Quartz</span><span class="vl" id="pcf1-nc-q1">0.00 lbs</span></div>
+      <div class="rr"><span class="lb">Neat Coat (intercoat)</span><span class="vl" id="pcf1-nc-ic">0.00 gal</span></div>
+      <div class="rr"><span class="lb">2nd Broadcast Quartz</span><span class="vl" id="pcf1-nc-q2">0.00 lbs</span></div>
+      <div class="rr"><span class="lb">Neat Coat (1st top coat)</span><span class="vl" id="pcf1-nc-1">0.00 gal</span></div>
+      <div class="rr hi2"><span class="lb">Total Quartz</span><span class="vl" id="pcf1-nc-qt">0.00 lbs</span></div>
+      <div class="rr hi2"><span class="lb">Total Neat Coat</span><span class="vl" id="pcf1-nc-t">0.00 gal</span></div>
+      <div class="rr sec-hd"><span class="lb">Seal Coat Options</span></div>
+      <div class="rr"><span class="lb">221 WB Satin Urethane</span><span class="vl" id="pcf1-nc-wb">0.00 gal</span></div>
+      <div class="rr"><span class="lb">421 SB Gloss Urethane</span><span class="vl" id="pcf1-nc-sb">0.00 gal</span></div>
+      <div class="rr"><span class="lb">Acrylic Floor Finish</span><span class="vl" id="pcf1-nc-af">0.00 gal</span></div>
+      <div class="rr"><span class="lb">Get-A-Grip (WB &amp; WS)</span><span class="vl" id="pcf1-nc-gag">0.00 packs</span></div>
+      <div class="rr"><span class="lb">Get-A-Grip (tbsp)</span><span class="vl" id="pcf1-nc-tbsp">0.00 tbsp</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══ PAGE 9: POLY HARD ═══ -->
+<div class="pg" id="p8">
+<div class="sh"><div class="sl">System 9</div><h2>Poly Hard</h2><p>Three system options: Solid Color, Decorative Quartz, and Double Broadcast.</p></div>
+<div class="cd">
+  <div class="ct">&#9670; Square Footage</div>
+  <div class="sqft-in">
+    <div class="fg"><label>Direct Sq Ft</label><input type="number" id="ph-sf" placeholder="0" oninput="calcPH()"></div>
+    <div style="align-self:flex-end;padding-bottom:10px;color:var(--t3);font-size:.8rem">— or —</div>
+    <div class="fg"><label>Length (ft)</label><input type="number" id="ph-l" placeholder="0" oninput="calcPH()"></div>
+    <div class="fg"><label>Width (ft)</label><input type="number" id="ph-w" placeholder="0" oninput="calcPH()"></div>
+    <div class="sqft-disp">= <span id="ph-tot">0</span> sq ft</div>
+  </div>
+</div>
+<div class="g3">
+  <div class="cd">
+    <div class="ct" style="color:#60a5fa">Solid Color</div>
+    <div class="rr"><span class="lb">Poly Hard</span><span class="vl" id="ph-sc-ph">0.00 kits</span></div>
+    <div class="rr"><span class="lb">Sand</span><span class="vl" id="ph-sc-sand">0.00 lbs</span></div>
+    <div class="rr"><span class="lb">PERFECT Poly 90</span><span class="vl" id="ph-sc-pp">0.00 gal</span></div>
+    <div class="rr"><span class="lb">Poly Fusion Color Pack</span><span class="vl" id="ph-sc-pfcp">0.00 qts</span></div>
+    <div class="rr"><span class="lb">Super Nova</span><span class="vl" id="ph-sc-sn">0.00 gal</span></div>
+  </div>
+  <div class="cd">
+    <div class="ct" style="color:#34d399">Decorative Quartz</div>
+    <div class="rr"><span class="lb">Poly Hard</span><span class="vl" id="ph-dq-ph">0.00 kits</span></div>
+    <div class="rr"><span class="lb">Quartz</span><span class="vl" id="ph-dq-qz">0.00 lbs</span></div>
+    <div class="rr"><span class="lb">PERFECT Poly 90</span><span class="vl" id="ph-dq-pp">0.00 gal</span></div>
+  </div>
+  <div class="cd">
+    <div class="ct" style="color:#fb923c">Double Broadcast</div>
+    <div class="rr"><span class="lb">Poly Hard</span><span class="vl" id="ph-db-ph">0.00 kits</span></div>
+    <div class="rr"><span class="lb">1st Broadcast Quartz</span><span class="vl" id="ph-db-q1">0.00 lbs</span></div>
+    <div class="rr"><span class="lb">PERFECT Poly 90 (intercoat)</span><span class="vl" id="ph-db-ic">0.00 gal</span></div>
+    <div class="rr"><span class="lb">2nd Broadcast Quartz</span><span class="vl" id="ph-db-q2">0.00 lbs</span></div>
+    <div class="rr"><span class="lb">PERFECT Poly 90 1st Top Coat</span><span class="vl" id="ph-db-1">0.00 gal</span></div>
+    <div class="rr"><span class="lb">PERFECT Poly 90 2nd Top Coat</span><span class="vl" id="ph-db-2">0.00 gal</span></div>
+  </div>
+</div>
+</div>
+
+</div><!-- end .mc -->
+
+<script>
+// ─── Navigation ───
+function go(i){
+  document.querySelectorAll('.pg').forEach((p,j)=>p.classList.toggle('ac',j===i));
+  document.querySelectorAll('.nb').forEach((b,j)=>b.classList.toggle('ac',j===i));
+}
+
+// ─── Sub-tab toggles ───
+function gfSub(i){
+  [0,1,2].forEach(j=>{
+    document.getElementById('gf-'+j).style.display=j===i?'':'none';
+    document.querySelectorAll('#gf-subs .vt')[j].classList.toggle('ac',j===i);
+  });
+}
+function pcfSub(i){
+  [0,1].forEach(j=>{
+    document.getElementById('pcf-'+j).style.display=j===i?'':'none';
+    document.querySelectorAll('#pcf-subs .vt')[j].classList.toggle('ac',j===i);
+  });
+}
+
+// ─── Helpers ───
+function v(id){return parseFloat(document.getElementById(id).value)||0;}
+function s(id,val,unit){document.getElementById(id).textContent=val.toFixed(2)+' '+(unit||'');}
+function sqft(sf,l,w){return (l*w)+sf;}
+function lrb(sqft,mil){return (sqft*(mil/1000)*144.4)/231;}
+
+// ─── GraniFlex 0: ColorFlakes ───
+function calcGF0(){
+  const sf=sqft(v('gf0-sf'),v('gf0-l'),v('gf0-w'));
+  document.getElementById('gf0-tot').textContent=sf.toFixed(0);
+  const pf1=sf/200,pf2=sf/200,pft=pf1+pf2;
+  const lrbV=lrb(sf,40),cf=sf/6;
+  // SuperThane
+  s('gf0-st-pf1',pf1,'gal');s('gf0-st-pf2',pf2,'gal');s('gf0-st-pft',pft,'gal');
+  s('gf0-st-lrb',lrbV,'gal');s('gf0-st-cf',cf,'lbs');
+  const st1=sf/160,st2=sf/240,stt=st1+st2;
+  s('gf0-st-1',st1,'gal');s('gf0-st-2',st2,'gal');s('gf0-st-t',stt,'gal');
+  s('gf0-st-gag',sf>0?st2/5:0,'packs');s('gf0-st-tbsp',sf>0?st2*4:0,'tbsp');
+  // PERFECT Poly 90
+  s('gf0-pp-pf1',pf1,'gal');s('gf0-pp-pf2',pf2,'gal');s('gf0-pp-pft',pft,'gal');
+  s('gf0-pp-lrb',lrbV,'gal');s('gf0-pp-cf',cf,'lbs');
+  const pp1=sf/160,pp2=sf/240,ppt=pp1+pp2;
+  s('gf0-pp-1',pp1,'gal');s('gf0-pp-2',pp2,'gal');s('gf0-pp-t',ppt,'gal');
+  const directSF=v('gf0-sf'); s('gf0-pp-oad',directSF>0?directSF/100:0,'gal');
+  s('gf0-pp-gag',sf>0?pp2/5:0,'packs');s('gf0-pp-tbsp',sf>0?pp2*4:0,'tbsp');
+  // Graniseal
+  s('gf0-gs-pf1',pf1,'gal');s('gf0-gs-pf2',pf2,'gal');s('gf0-gs-pft',pft,'gal');
+  s('gf0-gs-lrb',lrbV,'gal');s('gf0-gs-cf',cf,'lbs');
+  const gs1=sf/160,gs2=sf/240,gst=gs1+gs2;
+  s('gf0-gs-1',gs1,'gal');s('gf0-gs-2',gs2,'gal');s('gf0-gs-t',gst,'gal');
+}
+
+// ─── GraniFlex 1: Quartz 1 Broadcast ───
+function calcGF1(){
+  const sf=sqft(v('gf1-sf'),v('gf1-l'),v('gf1-w'));
+  document.getElementById('gf1-tot').textContent=sf.toFixed(0);
+  const pf1=sf/200,pf2=sf/200,pft=pf1+pf2,lrbV=lrb(sf,40),qz=sf*0.5;
+  // SuperThane
+  s('gf1-st-pf1',pf1,'gal');s('gf1-st-pf2',pf2,'gal');s('gf1-st-pft',pft,'gal');
+  s('gf1-st-lrb',lrbV,'gal');s('gf1-st-qz',qz,'lbs');
+  const st1=sf/140,st2=sf/200,stt=st1+st2;
+  s('gf1-st-1',st1,'gal');s('gf1-st-2',st2,'gal');s('gf1-st-t',stt,'gal');
+  s('gf1-st-gag',sf>0?st2/5:0,'packs');s('gf1-st-tbsp',sf>0?st2*4:0,'tbsp');
+  // PERFECT Poly 90
+  s('gf1-pp-pf1',pf1,'gal');s('gf1-pp-pf2',pf2,'gal');s('gf1-pp-pft',pft,'gal');
+  s('gf1-pp-lrb',lrbV,'gal');s('gf1-pp-qz',qz,'lbs');
+  const pp1=sf/140,pp2=sf/200,ppt=pp1+pp2;
+  s('gf1-pp-1',pp1,'gal');s('gf1-pp-2',pp2,'gal');s('gf1-pp-t',ppt,'gal');
+  const dSF=v('gf1-sf');s('gf1-pp-oad',dSF>0?dSF/100:0,'gal');
+  s('gf1-pp-gag',sf>0?pp2/5:0,'packs');s('gf1-pp-tbsp',sf>0?pp2*4:0,'tbsp');
+  // Graniseal
+  s('gf1-gs-pf1',pf1,'gal');s('gf1-gs-pf2',pf2,'gal');s('gf1-gs-pft',pft,'gal');
+  s('gf1-gs-lrb',lrbV,'gal');s('gf1-gs-qz',qz,'lbs');
+  const gs1=sf/140,gs2=sf/200,gst=gs1+gs2;
+  s('gf1-gs-1',gs1,'gal');s('gf1-gs-2',gs2,'gal');s('gf1-gs-t',gst,'gal');
+}
+
+// ─── GraniFlex 2: Quartz 2 Broadcasts ───
+function calcGF2(){
+  const sf=sqft(v('gf2-sf'),v('gf2-l'),v('gf2-w'));
+  document.getElementById('gf2-tot').textContent=sf.toFixed(0);
+  const pf1=sf/200,pf2=sf/200,pft=pf1+pf2,lrbV=lrb(sf,40);
+  const q1=sf*0.5,q2=sf*0.5,qt=q1+q2;
+  // SuperThane
+  s('gf2-st-pf1',pf1,'gal');s('gf2-st-pf2',pf2,'gal');s('gf2-st-pft',pft,'gal');
+  s('gf2-st-lrb',lrbV,'gal');s('gf2-st-q1',q1,'lbs');s('gf2-st-q2',q2,'lbs');
+  const stIC=sf/175,st1=sf/140,st2=sf/200,stt=stIC+st1+st2;
+  s('gf2-st-ic',stIC,'gal');s('gf2-st-1',st1,'gal');s('gf2-st-2',st2,'gal');
+  s('gf2-st-qt',qt,'lbs');s('gf2-st-t',stt,'gal');
+  s('gf2-st-gag',sf>0?st1/5:0,'packs');s('gf2-st-tbsp',sf>0?st1*4:0,'tbsp');
+  // PERFECT Poly 90
+  s('gf2-pp-pf1',pf1,'gal');s('gf2-pp-pf2',pf2,'gal');s('gf2-pp-pft',pft,'gal');
+  s('gf2-pp-lrb',lrbV,'gal');s('gf2-pp-q1',q1,'lbs');s('gf2-pp-q2',q2,'lbs');
+  const ppIC=sf/175,pp1=sf/140,pp2=sf/200,ppt=ppIC+pp1+pp2;
+  s('gf2-pp-ic',ppIC,'gal');s('gf2-pp-1',pp1,'gal');s('gf2-pp-2',pp2,'gal');
+  s('gf2-pp-qt',qt,'lbs');s('gf2-pp-t',ppt,'gal');
+  const dSF=v('gf2-sf');s('gf2-pp-oad',sf>0?sf/100:0,'gal');
+  s('gf2-pp-gag',sf>0?pp2/5:0,'packs');s('gf2-pp-tbsp',sf>0?pp2*4:0,'tbsp');
+  // Graniseal
+  s('gf2-gs-pf1',pf1,'gal');s('gf2-gs-pf2',pf2,'gal');s('gf2-gs-pft',pft,'gal');
+  s('gf2-gs-lrb',lrbV,'gal');s('gf2-gs-q1',q1,'lbs');s('gf2-gs-q2',q2,'lbs');
+  const gsIC=sf/175,gs1=sf/140,gs2=sf/200,gst=gsIC+gs1+gs2;
+  s('gf2-gs-ic',gsIC,'gal');s('gf2-gs-1',gs1,'gal');s('gf2-gs-2',gs2,'gal');
+  s('gf2-gs-qt',qt,'lbs');s('gf2-gs-t',gst,'gal');
+}
+
+// ─── Metallic Marble Stain ───
+function calcMM(){
+  const sf=sqft(v('mm-sf'),v('mm-l'),v('mm-w'));
+  document.getElementById('mm-tot').textContent=sf.toFixed(0);
+  const nc1=sf/70,mp1=sf>0?nc1/3:0,nc2=sf/60,mp2=sf>0?nc2/3:0;
+  s('mm-nc1',nc1,'gal');s('mm-mp1',mp1,'jars');
+  s('mm-nc2',nc2,'gal');s('mm-mp2',mp2,'jars');
+  s('mm-nct',nc1+nc2,'gal');s('mm-mpt',sf>0?mp1+mp2:0,'jars');
+  s('mm-tc1',sf/300,'gal');s('mm-tc2',sf/300,'gal');
+  s('mm-tc3',sf/1500,'gal');s('mm-tc4',sf/160,'gal');
+}
+
+// ─── Resinous 1-2-3 ───
+function calcR3(){
+  const sf=sqft(v('r3-sf'),v('r3-l1'),v('r3-w1'))+v('r3-l2')*v('r3-w2');
+  document.getElementById('r3-tot').textContent=sf.toFixed(0);
+  const bc=sf/200,c1=sf/400,c2=sf/400;
+  s('r3-bc',bc,'gal');s('r3-c1',c1,'gal');s('r3-c2',c2,'gal');s('r3-ct',c1+c2,'gal');
+}
+
+// ─── Shared texture system calc ───
+function calcTexture(pfx,groutTM,groutR,textureTM,textureR){
+  const sf=sqft(v(pfx+'-sf'),v(pfx+'-l'),v(pfx+'-w'));
+  document.getElementById(pfx+'-tot').textContent=sf.toFixed(0);
+  // Grout coat
+  const gTM=sf/groutTM,gR=sf/groutR,gBMP=gTM*6;
+  const stLg=sf/100,stSm=stLg*2;
+  s(pfx+'-g-tm',gTM,'bags');s(pfx+'-g-r',gR,'gal');s(pfx+'-g-bmp',gBMP,'oz');
+  s(pfx+'-st-lg',stLg,'rolls');s(pfx+'-st-sm',stSm,'rolls');
+  // Texture coat
+  const tTM=sf/textureTM,tR=sf/textureR,bfp=tTM*2;
+  s(pfx+'-t-tm',tTM,'bags');s(pfx+'-t-r',tR,'gal');s(pfx+'-t-bfp',bfp,'oz');
+  // Staining
+  const stain=sf/225;s(pfx+'-st',stain,'gal');
+  // Totals
+  s(pfx+'-tm-t',gTM+tTM,'bags');s(pfx+'-r-t',gR+tR,'gal');
+  s(pfx+'-bp-t',gBMP,'oz');s(pfx+'-bfp-t',bfp,'oz');
+  // Sealer options
+  const ac1=sf/140,ac2=sf/160;
+  s(pfx+'-ac1',ac1,'gal');s(pfx+'-ac2',ac2,'gal');s(pfx+'-act',ac1+ac2,'gal');
+  const nc1=sf/100,nc2=sf/140;
+  s(pfx+'-nc1',nc1,'gal');s(pfx+'-nc2',nc2,'gal');s(pfx+'-nct',nc1+nc2,'gal');
+  const wb=sf/350;
+  s(pfx+'-wb',wb,'gal');s(pfx+'-gag',sf>0?wb/5:0,'packs');s(pfx+'-tbsp',sf>0?wb*4:0,'tbsp');
+}
+function calcGFS(){calcTexture('gfs',200,200,175,175);}
+function calcTS(){calcTexture('ts',200,200,250,200);}
+function calcRCW(){calcTexture('rcw',200,200,200,200);}
+
+// ─── CP Sealer ───
+function calcCPS(){
+  const sf=sqft(v('cps-sf'),v('cps-l'),v('cps-w'));
+  document.getElementById('cps-tot').textContent=sf.toFixed(0);
+  const qt=sf/400;s('cps-s',qt,'quarts');s('cps-w2',qt*9/4,'gal');
+}
+
+// ─── Protector Color Flakes 0: Color Flakes ───
+function calcPCF0(){
+  const sf=sqft(v('pcf0-sf'),v('pcf0-l'),v('pcf0-w'));
+  document.getElementById('pcf0-tot').textContent=sf.toFixed(0);
+  const bc=sf/175,cf=sf/6;
+  // SuperThane
+  s('pcf0-st-bc',bc,'gal');s('pcf0-st-cf',cf,'lbs');
+  const st1=sf/160,st2=sf/260,stt=st1+st2;
+  s('pcf0-st-1',st1,'gal');s('pcf0-st-2',st2,'gal');s('pcf0-st-t',stt,'gal');
+  s('pcf0-st-gag',sf>0?st2/5:0,'packs');s('pcf0-st-tbsp',sf>0?st2*4:0,'tbsp');
+  // PERFECT Poly 90
+  s('pcf0-pp-bc',bc,'gal');s('pcf0-pp-cf',cf,'lbs');
+  const pp1=sf/160,pp2=sf/240,ppt=pp1+pp2;
+  s('pcf0-pp-1',pp1,'gal');s('pcf0-pp-2',pp2,'gal');s('pcf0-pp-t',ppt,'gal');
+  s('pcf0-pp-oad',sf/110,'gal');
+  s('pcf0-pp-gag',sf>0?pp2/5:0,'packs');s('pcf0-pp-tbsp',sf>0?pp2*4:0,'tbsp');
+  // Protectorthane
+  s('pcf0-pt-bc',bc,'gal');s('pcf0-pt-cf',cf,'lbs');
+  const pt1=sf/160,pt2=sf/240,ptt=pt1+pt2;
+  s('pcf0-pt-1',pt1,'gal');s('pcf0-pt-2',pt2,'gal');s('pcf0-pt-t',ptt,'gal');
+  s('pcf0-pt-gag',sf>0?pt2/5:0,'packs');s('pcf0-pt-tbsp',sf>0?pt2*4:0,'tbsp');
+  // Neat Coat
+  s('pcf0-nc-bc',bc,'gal');s('pcf0-nc-cf',cf,'lbs');
+  const nc1=sf/100;s('pcf0-nc-1',nc1,'gal');
+  s('pcf0-nc-wb',sf/300,'gal');s('pcf0-nc-sb',sf/300,'gal');s('pcf0-nc-af',sf/1500,'gal');
+  s('pcf0-nc-gag',sf>0?nc1/5:0,'packs');
+}
+
+// ─── Protector Color Flakes 1: Quartz Double Broadcast ───
+function calcPCF1(){
+  const sf=sqft(v('pcf1-sf'),v('pcf1-l'),v('pcf1-w'));
+  document.getElementById('pcf1-tot').textContent=sf.toFixed(0);
+  const bc=sf/175,q1=sf*0.5,q2=sf*0.5,qt=q1+q2;
+  // SuperThane
+  s('pcf1-st-bc',bc,'gal');s('pcf1-st-q1',q1,'lbs');s('pcf1-st-q2',q2,'lbs');
+  const stIC=sf/170,st1=sf/140,st2=sf/200,stt=stIC+st1+st2;
+  s('pcf1-st-ic',stIC,'gal');s('pcf1-st-1',st1,'gal');s('pcf1-st-2',st2,'gal');
+  s('pcf1-st-qt',qt,'lbs');s('pcf1-st-t',stt,'gal');
+  s('pcf1-st-gag',sf>0?st1/5:0,'packs');s('pcf1-st-tbsp',sf>0?st1*4:0,'tbsp');
+  // PERFECT Poly 90
+  s('pcf1-pp-bc',bc,'gal');s('pcf1-pp-q1',q1,'lbs');s('pcf1-pp-q2',q2,'lbs');
+  const ppIC=sf/175,pp1=sf/140,pp2=sf/200,ppt=ppIC+pp1+pp2;
+  s('pcf1-pp-ic',ppIC,'gal');s('pcf1-pp-1',pp1,'gal');s('pcf1-pp-2',pp2,'gal');
+  s('pcf1-pp-qt',qt,'lbs');s('pcf1-pp-t',ppt,'gal');
+  s('pcf1-pp-oad',sf/70,'gal');
+  s('pcf1-pp-gag',sf>0?pp2/5:0,'packs');s('pcf1-pp-tbsp',sf>0?pp2*4:0,'tbsp');
+  // Protectorthane
+  s('pcf1-pt-bc',bc,'gal');s('pcf1-pt-q1',q1,'lbs');s('pcf1-pt-q2',q2,'lbs');
+  const ptIC=sf/175,pt1=sf/140,pt2=sf/200,ptt=ptIC+pt1+pt2;
+  s('pcf1-pt-ic',ptIC,'gal');s('pcf1-pt-1',pt1,'gal');s('pcf1-pt-2',pt2,'gal');
+  s('pcf1-pt-qt',qt,'lbs');s('pcf1-pt-t',ptt,'gal');
+  s('pcf1-pt-gag',sf>0?pt2/5:0,'packs');s('pcf1-pt-tbsp',sf>0?pt2*4:0,'tbsp');
+  // Neat Coat
+  s('pcf1-nc-bc',bc,'gal');s('pcf1-nc-q1',q1,'lbs');s('pcf1-nc-q2',q2,'lbs');
+  const ncIC=sf/85,nc1=sf/175,nct=ncIC+nc1;
+  s('pcf1-nc-ic',ncIC,'gal');s('pcf1-nc-1',nc1,'gal');
+  s('pcf1-nc-qt',qt,'lbs');s('pcf1-nc-t',nct,'gal');
+  s('pcf1-nc-wb',sf/300,'gal');s('pcf1-nc-sb',sf/300,'gal');s('pcf1-nc-af',sf/1500,'gal');
+  s('pcf1-nc-gag',sf>0?nc1/5:0,'packs');s('pcf1-nc-tbsp',sf>0?nc1*4:0,'tbsp');
+}
+
+// ─── Poly Hard ───
+function calcPH(){
+  const sf=sqft(v('ph-sf'),v('ph-l'),v('ph-w'));
+  document.getElementById('ph-tot').textContent=sf.toFixed(0);
+  // Solid Color
+  const scPH=sf/50,scPP=sf/110;
+  s('ph-sc-ph',scPH,'kits');s('ph-sc-sand',sf/2,'lbs');
+  s('ph-sc-pp',scPP,'gal');s('ph-sc-pfcp',scPP/2,'qts');s('ph-sc-sn',sf/140,'gal');
+  // Decorative Quartz
+  s('ph-dq-ph',sf/50,'kits');s('ph-dq-qz',sf*1,'lbs');s('ph-dq-pp',sf/100,'gal');
+  // Double Broadcast
+  s('ph-db-ph',sf/50,'kits');s('ph-db-q1',sf*1,'lbs');
+  s('ph-db-ic',sf/175,'gal');s('ph-db-q2',sf/2,'lbs');
+  s('ph-db-1',sf/140,'gal');s('ph-db-2',sf/200,'gal');
+}
+</script>
+</body>
+</html>
